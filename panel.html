@@ -3,130 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Cursos - NeuroSync Edition</title>
+    <title>Panel de Cursos - Estación Cuántica NeuroSync</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-bg: #010103;
+            --glass: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-blue: #00ffff;
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #0c0d12;
-            color: #c0c0c0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--space-bg);
             margin: 0;
-            padding: 2rem 1rem;
-            box-sizing: border-box;
-            background-image: linear-gradient(rgba(173,216,230,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(173,216,230,0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
         }
+
+        /* --- ESCENARIO ESPACIAL FOTORREALISTA --- */
+        .universe-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 50%, #08081a 0%, #010103 100%);
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--d) infinite;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.8; } }
+
+        /* --- EL SOL DINÁMICO --- */
+        .real-sun {
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 380px; height: 380px;
+            background-image: url('https://sdo.gsfc.nasa.gov/assets/img/latest/latest_4096_0171.jpg');
+            background-size: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(255, 180, 0, 0.4), 0 0 150px rgba(255, 100, 0, 0.2);
+            z-index: -1;
+        }
+
+        .flare {
+            position: absolute;
+            background: radial-gradient(ellipse at center, rgba(255,150,0,0.6) 0%, transparent 80%);
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(15px);
+        }
+
+        .f1 { width: 200px; height: 70px; top: 25%; left: -50px; transform: rotate(-35deg); animation: solarFlare 8s infinite ease-in-out; }
+        .f2 { width: 160px; height: 60px; bottom: 30%; left: -40px; transform: rotate(45deg); animation: solarFlare 12s infinite ease-in-out 2s; }
+        .f3 { width: 220px; height: 80px; bottom: -30px; left: 25%; transform: rotate(15deg); animation: solarFlare 10s infinite ease-in-out 4s; }
+
+        @keyframes solarFlare {
+            0%, 100% { opacity: 0; transform: scale(0.8) translate(0, 0); }
+            30% { opacity: 0.5; }
+            50% { opacity: 0.8; transform: scale(1.3) translate(-30px, 15px); }
+            70% { opacity: 0.3; }
+        }
+
+        /* --- OTROS ASTROS --- */
+        .real-moon {
+            position: absolute;
+            bottom: 12%; left: 6%;
+            width: 120px; height: 120px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg');
+            background-size: cover;
+            border-radius: 50%;
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8), 0 0 25px rgba(255,255,255,0.1);
+            opacity: 0.85;
+        }
+
+        .real-planet-ring {
+            position: absolute;
+            top: 65%; right: 7%;
+            width: 280px; height: 160px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Saturn_during_Equinox.jpg/1280px-Saturn_during_Equinox.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.85;
+            filter: drop-shadow(0 0 20px rgba(100, 100, 255, 0.15));
+        }
+
+        /* --- CONTENIDO Y TARJETAS --- */
         .panel-container {
-            text-align: center;
-            background-color: rgba(22, 27, 34, 0.7);
-            backdrop-filter: blur(8px);
-            padding: 2.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-            max-width: 1100px; /* Aumentado ligeramente para 3 columnas */
+            position: relative;
+            z-index: 10;
             width: 100%;
-            border: 1px solid rgba(48, 54, 61, 0.5);
+            max-width: 1200px;
+            padding: 3rem 1.5rem;
+            text-align: center;
         }
+
         h1 {
             font-family: 'Orbitron', sans-serif;
-            background-image: linear-gradient(to right, #00ffff, #00bfff, #8a2be2);
+            background: linear-gradient(to right, var(--neon-blue), #8a2be2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: 2.5rem;
             font-weight: 800;
-            margin-bottom: 2rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+            margin-bottom: 4rem;
+            letter-spacing: 5px;
+            text-shadow: 0 0 25px rgba(0,255,255,0.3);
         }
-        @media (min-width: 768px) {
-            h1 { font-size: 3.5rem; }
-        }
+
+        @media (min-width: 768px) { h1 { font-size: 3.8rem; } }
+
         .course-card-link {
-            display: block;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            color: #e2e8f0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            border: 1px solid #30363d;
-            transition: all 0.3s ease;
+            background: var(--glass);
+            backdrop-filter: blur(25px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
             overflow: hidden;
-            background-color: #1a1e27;
-            position: relative;
+            transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
         }
+
         .course-card-link:hover {
-            transform: translateY(-0.4rem) scale(1.02);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
-            border-color: #00bfff;
+            transform: translateY(-15px);
+            border-color: rgba(0, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 20px rgba(0, 255, 255, 0.1);
         }
-        .course-image-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%;
-        }
+
+        .course-image-container { position: relative; padding-top: 56.25%; overflow: hidden; }
         .course-image {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; transition: 0.8s ease;
         }
-        .course-card-link:hover .course-image {
-            transform: scale(1.08);
-            opacity: 0.8;
-        }
+        .course-card-link:hover .course-image { transform: scale(1.1); }
+
         .course-info {
-            padding: 1.25rem 1rem;
-            font-size: 1.15rem;
+            padding: 2rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
             font-weight: 700;
-            background-color: #1a1e27;
-            border-top: 1px solid #30363d;
-            letter-spacing: 0.5px;
-            font-family: 'Orbitron', sans-serif; /* Para que NeuroSync destaque */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
         }
-        .neuro-highlight { color: #00d4ff; }
+
+        .neuro-highlight { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0,255,255,0.4); }
     </style>
 </head>
 <body>
+
+    <div class="universe-container" id="universe">
+        <div class="real-sun">
+            <div class="flare f1"></div>
+            <div class="flare f2"></div>
+            <div class="flare f3"></div>
+        </div>
+        <div class="real-moon"></div>
+        <div class="real-planet-ring"></div>
+    </div>
+
     <div class="panel-container">
-        <h1>Bienvenido al Panel de Cursos</h1>
+        <h1>PANEL DE CURSOS</h1>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-            
-            <a id="frecuencias-link" href="https://frecuencias-sanadoras-ingreso.netlify.app" class="course-card-link">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-8">
+            <a href="https://frecuencias-sanadoras-ingreso.netlify.app" class="course-card-link">
                 <div class="course-image-container">
-                    <img src="https://f005.backblazeb2.com/file/BACKUP-DE-IMAGENES/ESPIRITUALIDAD/ritual+de+frecuencias+(1).png" alt="Miniatura de Ritual de Frecuencias" class="course-image">
+                    <img src="https://f005.backblazeb2.com/file/BACKUP-DE-IMAGENES/ESPIRITUALIDAD/ritual+de+frecuencias+(1).png" class="course-image">
                 </div>
-                <div class="course-info">
-                    Reproductor de Frecuencias
-                </div>
+                <div class="course-info">Frecuencias Sanadoras</div>
             </a>
 
-            <a id="neurosync-link" href="https://glittering-kulfi-0b0d49.netlify.app" class="course-card-link">
+            <a href="https://glittering-kulfi-0b0d49.netlify.app" class="course-card-link">
                 <div class="course-image-container">
-                    <img src="https://f005.backblazeb2.com/file/BACKUP-DE-IMAGENES/ESPIRITUALIDAD/Gemini_Generated_Image_w35flgw35flgw35f.png" alt="Miniatura de NeuroSync" class="course-image">
+                    <img src="https://f005.backblazeb2.com/file/BACKUP-DE-IMAGENES/ESPIRITUALIDAD/Gemini_Generated_Image_w35flgw35flgw35f.png" class="course-image">
                 </div>
-                <div class="course-info">
-                    <span class="neuro-highlight">NEURO</span>SYNC APP
-                </div>
+                <div class="course-info"><span class="neuro-highlight">NEURO</span>SYNC APP</div>
             </a>
 
-            <a id="taller-link" href="https://despierta-tu-energia.netlify.app" class="course-card-link">
+            <a href="https://despierta-tu-energia.netlify.app" class="course-card-link">
                 <div class="course-image-container">
-                    <img src="https://f005.backblazeb2.com/file/BACKUP-DE-IMAGENES/ESPIRITUALIDAD/DESPIERTA+TU+ENERG%C3%8DA+INTERIOR.png" alt="Miniatura del Taller de Energía Interior" class="course-image">
+                    <img src="https://f005.backblazeb2.com/file/BACKUP-DE-IMAGENES/ESPIRITUALIDAD/DESPIERTA+TU+ENERG%C3%8DA+INTERIOR.png" class="course-image">
                 </div>
-                <div class="course-info">
-                    Taller Energía Interior
-                </div>
+                <div class="course-info">Energía Interior</div>
             </a>
-
         </div>
     </div>
+
+    <script>
+        function createStars() {
+            const container = document.getElementById('universe');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 1.2 + 0.4 + 'px';
+                star.style.width = size; star.style.height = size;
+                star.style.setProperty('--d', Math.random() * 4 + 3 + 's');
+                container.appendChild(star);
+            }
+        }
+        createStars();
+    </script>
 </body>
 </html>
